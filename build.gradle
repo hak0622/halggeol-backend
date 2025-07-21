@@ -12,6 +12,8 @@ repositories {
 
 ext {
     junitVersion = '5.11.0'
+    springSecurityVersion = '6.4.4'
+    jjwtVersion = '0.11.5'
 }
 
 sourceCompatibility = '17'
@@ -59,32 +61,40 @@ dependencies {
     // MySQL
     runtimeOnly 'mysql:mysql-connector-java:8.0.33'
 
-
     // 히카리 디비커넥션풀
     implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.1.0'
 
+    // redis
+    implementation 'org.springframework.data:spring-data-redis:3.2.3'
+    implementation 'io.lettuce:lettuce-core:6.3.1.Final'
 
+    // swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
 
     // AOP
     implementation 'org.aspectj:aspectjrt:1.9.20'
     implementation 'org.aspectj:aspectjweaver:1.9.20'
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+    // security
+    implementation("org.springframework.security:spring-security-core:${springSecurityVersion}")
+    implementation("org.springframework.security:spring-security-web:${springSecurityVersion}")
+    implementation("org.springframework.security:spring-security-config:${springSecurityVersion}")
+    implementation("org.springframework.security:spring-security-crypto:${springSecurityVersion}")
 
-    //security
-    implementation group: 'org.springframework.security', name: 'spring-security-core', version: '6.4.4'
-    implementation group: 'org.springframework.security', name: 'spring-security-web', version: '6.3.5'
-    implementation group: 'org.springframework.security', name: 'spring-security-config', version: '6.3.5'
+    // validation
+    implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
+    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
 
-    //jwt토큰기반인증용
-    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
-    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
-    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+    // jwt 토큰 기반 인증용
+    implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+    // 이메일 전송
+    implementation 'org.springframework:spring-context-support:6.1.6'
+    implementation 'com.sun.mail:jakarta.mail:2.0.1'
 
+    // 테스트
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
