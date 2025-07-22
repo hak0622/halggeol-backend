@@ -1,4 +1,4 @@
-package com.halggeol.backend.domain;
+package com.halggeol.backend.security.account.domain;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
