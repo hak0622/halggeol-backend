@@ -42,4 +42,15 @@ class UserControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertNull(response.getBody());
     }
+
+    @Test
+    void requestJoin_whenEmailExists_shouldReturnConflict() {
+        UserJoinDTO user = new UserJoinDTO();
+        user.setEmail("test@gmail.com");
+
+        ResponseEntity<Void> response = userController.requestJoin(user);
+
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertNull(response.getBody());
+    }
 }

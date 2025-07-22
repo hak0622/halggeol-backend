@@ -29,6 +29,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
+
         // 성공하면 요청한 이메일 넣어서 토큰 발급하고, 발급한 토큰 들어있는 링크 메일로 보내기
 
         return ResponseEntity.ok().build();
