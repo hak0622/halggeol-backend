@@ -75,9 +75,6 @@ dependencies {
     // redis
     implementation 'org.springframework.data:spring-data-redis:2.7.6'
 
-//    implementation 'io.lettuce.core:lettuce-core:6.1.5'
-
-
     // 테스트
     testImplementation "org.springframework:spring-test:${springVersion}"
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
@@ -105,7 +102,6 @@ dependencies {
     implementation 'org.springframework:spring-context-support:5.3.37'
     implementation 'com.sun.mail:javax.mail:1.6.2'
 }
-
 
 test {
     useJUnitPlatform()
