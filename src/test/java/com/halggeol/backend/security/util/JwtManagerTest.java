@@ -26,16 +26,16 @@ class JwtManagerTest {
 
     @Test
     void generateVerifyToken() {
-        UserJoinDTO user = UserJoinDTO.builder().email("test@example.com").build();
-        String token = jwtManager.generateVerifyToken(user);
+        String email = "test@example.com";
+        String token = jwtManager.generateVerifyToken(email);
         assertTrue(jwtManager.validateToken(token));
     }
 
     @Test
     void getEmail() {
-        UserJoinDTO user = UserJoinDTO.builder().email("test@test.com").build();
-        String token = jwtManager.generateAccessToken(user);
-        assertEquals(user.getEmail(), jwtManager.getEmail(token));
+        String email = "test@test.com";
+        String token = jwtManager.generateAccessToken(email);
+        assertEquals(email, jwtManager.getEmail(token));
     }
 
     @Test

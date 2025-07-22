@@ -1,5 +1,6 @@
 package com.halggeol.backend.user.controller;
 
+import com.halggeol.backend.security.util.JwtManager;
 import com.halggeol.backend.user.dto.UserDTO;
 import com.halggeol.backend.user.dto.UserJoinDTO;
 import com.halggeol.backend.user.service.UserService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/signup")
 public class UserController {
     private final UserService userService;
+    private final JwtManager jwtManager;
 
     @GetMapping("/request")
     public ResponseEntity<Void> requestJoin(@Valid UserJoinDTO user) {
@@ -29,8 +31,9 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-
         // 성공하면 요청한 이메일 넣어서 토큰 발급하고, 발급한 토큰 들어있는 링크 메일로 보내기
+
+//        jwtManager.generateVerifyToken(user);
 
         return ResponseEntity.ok().build();
     }

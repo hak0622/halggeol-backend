@@ -20,9 +20,9 @@ public class JwtManager {
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     // 액세스 토큰 생성
-    public String generateAccessToken(UserJoinDTO user) {
+    public String generateAccessToken(String email) {
         return Jwts.builder()
-            .setSubject(user.getEmail())
+            .setSubject(email)
             .setIssuedAt(new Date())
             .setExpiration(new Date(new Date().getTime() + ACCESS_TOKEN_VALID_MILISECOND))
             .signWith(key)
@@ -30,9 +30,9 @@ public class JwtManager {
     }
 
     // 이메일 인증 토큰 생성
-    public String generateVerifyToken(UserJoinDTO user) {
+    public String generateVerifyToken(String email) {
         return Jwts.builder()
-            .setSubject(user.getEmail())
+            .setSubject(email)
             .setIssuedAt(new Date())
             .setExpiration(new Date(new Date().getTime() + VERIFY_TOKEN_VALID_MILISECOND))
             .signWith(key)
