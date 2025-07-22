@@ -12,10 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    final UserMapper userMapper;
+    private final UserMapper userMapper;
 
     @Override
-    public boolean requestSignup(String email) {
+    public boolean findByEmail(String email) {
         User user = userMapper.findByEmail(email);
         return user != null;
     }
