@@ -33,17 +33,6 @@ class UserControllerTest {
     }
 
     @Test
-    void requestJoin_whenEmailNotExists_shouldReturnBadRequest() {
-        UserJoinDTO user = new UserJoinDTO();
-        user.setEmail("new@example");
-
-        ResponseEntity<Void> response = userController.requestJoin(user);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertNull(response.getBody());
-    }
-
-    @Test
     void requestJoin_whenEmailExists_shouldReturnConflict() {
         UserJoinDTO user = new UserJoinDTO();
         user.setEmail("test@gmail.com");

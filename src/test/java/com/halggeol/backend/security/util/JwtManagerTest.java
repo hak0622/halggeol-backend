@@ -20,6 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ContextConfiguration(classes = {AppConfig.class})
 @Log4j2
 class JwtManagerTest {
+    // 시간도 테스트 해봐야됨
 
     @Autowired
     private JwtManager jwtManager;

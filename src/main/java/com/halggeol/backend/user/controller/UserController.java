@@ -22,23 +22,12 @@ public class UserController {
     private final JwtManager jwtManager;
 
     @GetMapping("/request")
-    public ResponseEntity<Void> requestJoin(@Valid UserJoinDTO user) {
-        // 입력값 유효성 검증은 UserJoinDTO에서 진행
-        // 검증 실패 시 MethodArgumentNotValidException 예외 발생
-        // 스프링 MVC에서 자동으로 400 Bad Request로 응답함
-
-        if (userService.findByEmail(user.getEmail())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-
-        // 성공하면 요청한 이메일 넣어서 토큰 발급하고, 발급한 토큰 들어있는 링크 메일로 보내기
-
-//        jwtManager.generateVerifyToken(user);
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> requestJoin(UserJoinDTO user) {
+        return ResponseEntity.status(userService.requestJoin(user)).build();
     }
 
-//    @GetMapping("")
-//    public ResponseEntity<Void> signup(UserJoinDTO user) {
-//    }
+    @GetMapping("")
+    public ResponseEntity<Void> join(UserJoinDTO user) {
+        return ResponseEntity.ok().build();
+    }
 }
