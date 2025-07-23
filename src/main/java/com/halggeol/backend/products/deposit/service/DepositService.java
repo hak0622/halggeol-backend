@@ -1,10 +1,8 @@
 package com.halggeol.backend.products.deposit.service;
 
-import org.springframework.stereotype.Service;
+import com.halggeol.backend.domain.Deposit;
+import java.util.List;
 
-@Service
-public class DepositService {
-
-    
-
+public interface DepositService {
+    List<Deposit> getAll();
 }
