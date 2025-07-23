@@ -2,7 +2,6 @@ package com.halggeol.backend.products.savings.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.halggeol.backend.products.deposit.dto.FssDepositResponseDTO;
 import com.halggeol.backend.products.savings.dto.FssSavingsProductDTO;
 import com.halggeol.backend.products.savings.dto.FssSavingsResponseDTO;
 import java.util.List;
@@ -19,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class SavingsApiClient { // 금융감독원 적금 API 호출 전용 클라이언트 클래스
+public class FssSavingsApiClient { // 금융감독원 적금 API 호출 전용 클라이언트 클래스
     private final RestTemplate restTemplate;
     private final String BASE_URL = "http://finlife.fss.or.kr/finlifeapi/savingProductsSearch.json";
     private final String AUTH_KEY = "d6bacda5805286b5ae1da6177f3fe454";

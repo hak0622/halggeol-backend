@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class DepositApiClient { // 금융감독원 예금 API 호출 전용 클라이언트 클래스
+public class FssDepositApiClient { // 금융감독원 예금 API 호출 전용 클라이언트 클래스
     private final RestTemplate restTemplate; // 외부(금융감독원) API에 HTTP 요청을 보냄
     private final String BASE_URL = "http://finlife.fss.or.kr/finlifeapi/depositProductsSearch.json";
     private final String AUTH_KEY = "d6bacda5805286b5ae1da6177f3fe454";
