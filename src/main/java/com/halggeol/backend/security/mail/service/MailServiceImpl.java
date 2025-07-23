@@ -32,16 +32,16 @@ public class MailServiceImpl implements MailService {
 
     private String subject, body;
 
-    public void sendMail(@Valid MailDTO mailDTO) {
-        settingByMailType(mailDTO.getMailType());
+    public void sendMail(@Valid MailDTO mail) {
+        settingByMailType(mail.getMailType());
 
         try {
             HttpResponse<JsonNode> response = Unirest.post(url)
                 .basicAuth("api", apiKey)
                 .queryString("from", senderName + " <" + senderEmail + ">")
-                .queryString("to", mailDTO.getEmail())
+                .queryString("to", mail.getEmail())
                 .queryString("subject", subject)
-                .queryString("text", body + mailDTO.getToken())
+                .queryString("text", body + mail.getToken())
                 .asJson();
 
             int statusCode = response.getStatus();

@@ -4,5 +4,5 @@ import com.halggeol.backend.security.mail.dto.MailDTO;
 import javax.validation.Valid;
 
 public interface MailService {
-    void sendMail(@Valid MailDTO mailDTO);
+    void sendMail(@Valid MailDTO mail);
 }
