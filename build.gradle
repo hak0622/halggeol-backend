@@ -108,6 +108,9 @@ dependencies {
     // 이메일 전송
     implementation 'org.springframework:spring-context-support:5.3.37'
     implementation 'com.sun.mail:javax.mail:1.6.2'
+
+    //http
+    implementation 'org.apache.httpcomponents:httpclient:4.5.14'
 }
 
 
