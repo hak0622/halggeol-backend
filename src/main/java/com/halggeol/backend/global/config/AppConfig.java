@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackages = {"com.halggeol.backend",
     "com.halggeol.backend.products.deposit.controller"})
 @MapperScan(basePackages  = {"com.halggeol.backend.mapper",
+    "com.halggeol.backend.scrap.mapper",
+    "com.halggeol.backend.products.mapper",
     "com.halggeol.backend.products.deposit.mapper",
     "com.halggeol.backend.products.savings.mapper",
     "com.halggeol.backend.products.fund.mapper",
