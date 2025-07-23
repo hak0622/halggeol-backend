@@ -29,7 +29,7 @@ class JwtManagerTest {
     void generateVerifyToken() {
         String email = "test@example.com";
         String token = jwtManager.generateVerifyToken(email);
-        assertTrue(jwtManager.validateToken(token));
+        assertDoesNotThrow(() -> jwtManager.validateToken(token));
     }
 
     @Test

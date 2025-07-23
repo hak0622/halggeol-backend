@@ -9,4 +9,8 @@
     SELECT * FROM users WHERE email = #{email}
   </select>
 
+  <insert id="insert">
+    INSERT INTO users (email, name, password, phone, birth, reg_date)
+    VALUES(#{email}, #{name}, #{password}, #{phone}, #{birth}, now())
+  </insert>
 </mapper>

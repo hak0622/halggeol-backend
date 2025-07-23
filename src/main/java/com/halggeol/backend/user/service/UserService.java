@@ -9,5 +9,5 @@ public interface UserService {
 
     HttpStatus requestJoin(@Valid UserJoinDTO user);
 
-    HttpStatus join(UserJoinDTO user);
+    HttpStatus join(@Valid UserJoinDTO user, String token);
 }

@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.halggeol.backend.global.config.AppConfig;
 import com.halggeol.backend.security.account.domain.User;
+import java.time.LocalDateTime;
+import java.time.Month;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,5 +29,21 @@ class UserMapperTest {
         User foundUser = userMapper.findByEmail(email);
 
         Assertions.assertEquals(email, foundUser.getEmail());
+    }
+
+    @Test
+    void insert() {
+        LocalDateTime birth = LocalDateTime.of(1990, Month.JANUARY, 2, 0, 0, 0);
+        User user = User.builder()
+                        .email("test2@example.com")
+                        .name("테스트2")
+                        .password("123")
+                        .phone("01000000000")
+                        .birth(birth)
+                        .build();
+        userMapper.insert(user);
+        User foundUser = userMapper.findByEmail("test2@example.com");
+
+        Assertions.assertEquals("01000000000", foundUser.getPhone());
     }
 }

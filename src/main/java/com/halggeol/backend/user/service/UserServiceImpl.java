@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final MailService mailService;
     private final JwtManager jwtManager;
+    private final Argon2PasswordEncoder passwordEncoder;
 
     @Override
     public boolean findByEmail(String email) {
@@ -49,20 +51,17 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public HttpStatus join(@Valid UserJoinDTO userToJoin) {
-//        // 인증 토큰 검증
-//
-//        if (Validator.isAgeValid(userToJoin.getBirth()) == false
-//            || Validator.isPasswordCorrect(userToJoin.getPassword(), userToJoin.getCheckPassword())) {
-//            return HttpStatus.BAD_REQUEST;
-//        }
-//
-//        User user = userToJoin.toVO();
-//
-//        // 비밀번호 암호화
-//        // db에 넣기
-//
-//        // auth??
+    public HttpStatus join(@Valid UserJoinDTO userToJoin, String token) {
+        jwtManager.validateToken(token);
+
+        if (Validator.isValidAge(userToJoin.getBirth()) == false
+            || Validator.isCorrectPassword(userToJoin.getPassword(), userToJoin.getCheckPassword())) {
+            return HttpStatus.BAD_REQUEST;
+        }
+
+        User user = userToJoin.toVO();
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userMapper.insert(user);
 
         return HttpStatus.OK;
     }

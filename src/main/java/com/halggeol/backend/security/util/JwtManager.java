@@ -52,11 +52,10 @@ public class JwtManager {
 
     // 토큰 유효성 검증
     // try-catch 처리하기
-    public boolean validateToken(String token) {
+    public void validateToken(String token) {
         Jws<Claims> claims = Jwts.parserBuilder()
             .setSigningKey(key)
             .build()
             .parseClaimsJws(token);
-        return true;
     }
 }
