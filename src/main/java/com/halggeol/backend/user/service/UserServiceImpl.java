@@ -1,13 +1,17 @@
 package com.halggeol.backend.user.service;
 
 import com.halggeol.backend.security.account.domain.User;
+import com.halggeol.backend.security.mail.domain.MailType;
+import com.halggeol.backend.security.mail.dto.MailDTO;
+import com.halggeol.backend.security.mail.service.MailService;
+import com.halggeol.backend.security.util.JwtManager;
+import com.halggeol.backend.security.util.Validator;
 import com.halggeol.backend.user.dto.UserJoinDTO;
 import com.halggeol.backend.user.mapper.UserMapper;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
+    private final MailService mailService;
+    private final JwtManager jwtManager;
 
     @Override
     public boolean findByEmail(String email) {
@@ -32,15 +38,32 @@ public class UserServiceImpl implements UserService {
             return HttpStatus.CONFLICT;
         }
 
-        // 성공하면 요청한 이메일 넣어서 토큰 발급하고, 발급한 토큰 들어있는 링크 메일로 보내기
-//        jwtManager.generateVerifyToken(user.getEmail());
+        mailService.sendMail(MailDTO.builder()
+                                    .email(user.getEmail())
+                                    .token(jwtManager.generateVerifyToken(user.getEmail()))
+                                    .mailType(MailType.SIGNUP)
+                                    .build());
 
         return HttpStatus.OK;
     }
 
     @Transactional
     @Override
-    public HttpStatus join(UserJoinDTO user) {
+    public HttpStatus join(@Valid UserJoinDTO userToJoin) {
+//        // 인증 토큰 검증
+//
+//        if (Validator.isAgeValid(userToJoin.getBirth()) == false
+//            || Validator.isPasswordCorrect(userToJoin.getPassword(), userToJoin.getCheckPassword())) {
+//            return HttpStatus.BAD_REQUEST;
+//        }
+//
+//        User user = userToJoin.toVO();
+//
+//        // 비밀번호 암호화
+//        // db에 넣기
+//
+//        // auth??
+
         return HttpStatus.OK;
     }
 }
