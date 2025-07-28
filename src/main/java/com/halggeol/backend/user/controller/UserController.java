@@ -29,6 +29,7 @@ public class UserController {
         return ResponseEntity.status(userService.requestJoin(user)).build();
     }
 
+    @PostMapping("")
     public ResponseEntity<Void> join(@RequestBody UserJoinDTO user, @RequestParam String token) {
         return ResponseEntity.status(userService.join(user, token)).build();
     }
