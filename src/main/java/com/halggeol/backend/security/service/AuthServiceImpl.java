@@ -4,12 +4,15 @@ import com.halggeol.backend.security.domain.CustomUser;
 import com.halggeol.backend.security.dto.FindEmailDTO;
 import com.halggeol.backend.security.dto.ResetPasswordDTO;
 import com.halggeol.backend.security.dto.ReverifyPasswordDTO;
+import com.halggeol.backend.security.mail.domain.MailType;
+import com.halggeol.backend.security.mail.dto.MailDTO;
+import com.halggeol.backend.security.mail.service.MailService;
 import com.halggeol.backend.security.util.JwtManager;
+import com.halggeol.backend.user.dto.EmailDTO;
 import com.halggeol.backend.user.mapper.UserMapper;
-import java.util.HashMap;
+import com.halggeol.backend.user.service.UserService;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -24,6 +27,8 @@ public class AuthServiceImpl implements AuthService {
     private final JwtManager jwtManager;
     private final UserMapper userMapper;
     private final Argon2PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final MailService mailService;
 
     @Override
     public Map<String, String> extendLogin(String email) {
@@ -44,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         List<String> maskedEmail = email.stream()
-            .map(String::toLowerCase)
+            .map(this::maskEmail)
             .toList();
 
         return Map.of(
@@ -74,7 +79,32 @@ public class AuthServiceImpl implements AuthService {
         if (!passwords.isPasswordConfirmed()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
         }
-        userMapper.updatePassword(user.getUser().getId(), passwordEncoder.encode(passwords.getNewPassword()));
+        userMapper.updatePassword(user.getUsername(), passwordEncoder.encode(passwords.getNewPassword()));
+        return Map.of("Message", "비밀번호가 변경되었습니다.");
+    }
+
+    @Override
+    public Map<String, String> requestResetPassword(EmailDTO email) {
+        if (userService.findByEmail(email.getEmail())) {
+            mailService.sendMail(MailDTO.builder()
+                                        .email(email.getEmail())
+                                        .token(jwtManager.generateVerifyToken(email.getEmail()))
+                                        .mailType(MailType.PASSWORD_RESET)
+                                        .build());
+        }
+
+        return Map.of("Message", "비밀번호 변경 이메일이 전송되었습니다.");
+    }
+
+    @Override
+    public Map<String, String> resetPasswordWithoutLogin(ResetPasswordDTO passwords, String token) {
+        if (!jwtManager.validateToken(token)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "토큰이 유효하지 않습니다.");
+        }
+        if (!passwords.isPasswordConfirmed()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
+        }
+        userMapper.updatePassword(jwtManager.getEmail(token), passwordEncoder.encode(passwords.getNewPassword()));
         return Map.of("Message", "비밀번호가 변경되었습니다.");
     }
 

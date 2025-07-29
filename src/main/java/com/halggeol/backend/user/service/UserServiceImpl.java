@@ -8,13 +8,10 @@ import com.halggeol.backend.security.util.JwtManager;
 import com.halggeol.backend.user.dto.EmailDTO;
 import com.halggeol.backend.user.dto.UserJoinDTO;
 import com.halggeol.backend.user.mapper.UserMapper;
-import java.util.HashMap;
 import java.util.Map;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +32,7 @@ public class UserServiceImpl implements UserService {
         return user != null;
     }
 
+    @Override
     public Map<String, String> requestJoin(EmailDTO email) {
         // 입력값 유효성 검증은 UserJoinDTO에서 진행
         // 검증 실패 시 MethodArgumentNotValidException 예외 발생
@@ -56,8 +54,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public Map<String, String> join(UserJoinDTO userToJoin, String token) {
-        jwtManager.validateToken(token);
-
+        if (!jwtManager.validateToken(token)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "토큰이 유효하지 않습니다.");
+        }
         if (!userToJoin.isValidAge()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "만 14세 이상 가입 가능합니다.");
         }
