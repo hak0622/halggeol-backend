@@ -3,9 +3,11 @@ package com.halggeol.backend.security.controller;
 import com.halggeol.backend.security.domain.CustomUser;
 import com.halggeol.backend.security.dto.FindEmailDTO;
 import com.halggeol.backend.security.dto.ResetPasswordDTO;
+import com.halggeol.backend.security.dto.ReverifyPasswordDTO;
 import com.halggeol.backend.security.service.AuthService;
 import java.util.HashMap;
 import java.util.Map;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -36,27 +38,29 @@ public class AuthController {
 
     // 아이디 찾기 API
     @PostMapping("/email/find")
-    public ResponseEntity<Map<String, String>> findEmail(@RequestBody FindEmailDTO info) {
-        Map<String, String> responseBody = authService.findEmail(info);
-        if (responseBody == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+    public ResponseEntity<Map<String, Object>> findEmail(
+        @Valid @RequestBody FindEmailDTO info
+    ) {
         return ResponseEntity.ok(authService.findEmail(info));
     }
 
-//    // 로그인 상태 비밀번호 재확인 API
-//    @PatchMapping("/password/reverify")
-//    public ResponseEntity<Void> reverifyPassword() {
-//    }
+    // 로그인 상태 비밀번호 재확인 API
+    @PostMapping("/password/reverify")
+    public ResponseEntity<Map<String, String>> reverifyPassword(
+        @AuthenticationPrincipal CustomUser user,
+        @Valid @RequestBody ReverifyPasswordDTO password
+    ) {
+        return ResponseEntity.ok(authService.reverifyPassword(user, password));
+    }
 
     // 로그인 상태 비밀번호 재설정 API
     @PatchMapping("/password/reset")
-    public ResponseEntity<Void> resetPasswordWithLogin(
+    public ResponseEntity<Map<String, String>> resetPasswordWithLogin(
         @AuthenticationPrincipal CustomUser user,
-        @RequestBody ResetPasswordDTO passwords,
+        @Valid @RequestBody ResetPasswordDTO passwords,
         @RequestHeader("Authorization") String bearerToken
     ) {
-        return ResponseEntity.status(authService.resetPasswordWithLogin(user, passwords, bearerToken)).build();
+        return ResponseEntity.ok(authService.resetPasswordWithLogin(user, passwords, bearerToken));
     }
 
 //    // 비로그인 상태 비밀번호 재설정 요청 API

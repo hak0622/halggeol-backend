@@ -10,12 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FindEmailDTO {
+public class ReverifyPasswordDTO {
     @NotBlank
-    @Pattern(regexp = RegexConstants.NAME_PATTERN)
-    private String name;
-
-    @NotBlank
-    @Pattern(regexp = RegexConstants.PHONE_PATTERN)
-    private String phone;
+    @Pattern(regexp = RegexConstants.PASSWORD_PATTERN)
+    private String confirmPassword;
 }
