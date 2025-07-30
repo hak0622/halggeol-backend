@@ -9,7 +9,11 @@ import com.halggeol.backend.security.util.JwtManager;
 import com.halggeol.backend.user.dto.EditProfileDTO;
 import com.halggeol.backend.user.dto.EmailDTO;
 import com.halggeol.backend.user.dto.UserJoinDTO;
+import com.halggeol.backend.user.dto.UserProductResponseDTO;
+import com.halggeol.backend.user.dto.UserProfileResponseDTO;
 import com.halggeol.backend.user.mapper.UserMapper;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -78,6 +82,15 @@ public class UserServiceImpl implements UserService {
     public String getNameById(int userId) {
         // 사용자 ID로 사용자 이름을 조회하는 메서드
         return userMapper.findNameById(userId);
+    }
+
+    @Override
+    public Map<String, Object> viewProfile(CustomUser user, String scope) {
+        UserProfileResponseDTO profile = userMapper.getUserProfileByUserId(user.getUser().getId());
+        return Map.of(
+            "Message", "유저 정보 조회에 성공했습니다.",
+            "profile", profile.toMap()
+        );
     }
 
     @Override
