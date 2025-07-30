@@ -87,4 +87,17 @@ public class ProductDetailServiceImpl implements ProductDetailService {
             productDetailMapper::incrementForexViewCount,
             productDetailMapper::incrementPensionViewCount);
     }
+
+    @Transactional(readOnly=true)
+    @Override
+    public String checkRecommendProductStatus(@AuthenticationPrincipal CustomUser user,
+        String productId) {
+
+        return productDetailMapper.selectProductStatus(user.getUser().getId(), productId);
+    }
+    @Transactional
+    @Override
+    public void updateProductStatus(@AuthenticationPrincipal CustomUser user, String productId, String productStatus) {
+        productDetailMapper.updateProductStatus(user.getUser().getId(), productId, productStatus);
+    }
 }
