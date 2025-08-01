@@ -14,7 +14,10 @@ public interface UserMapper {
 
     User findById(int id);
 
-    List<String> findEmailByNameAndPhone(@Param("name") String name, @Param("phone") String phone);
+    List<String> findEmailByNameAndPhone(
+        @Param("name") String name,
+        @Param("phone") String phone
+    );
 
     UserProfileResponseDTO getUserProfileByUserId(int id);
 
@@ -28,11 +31,6 @@ public interface UserMapper {
     int updateProfileById(
         @Param("id") int id,
         @Param("phone") String phone
-    );
-
-    int updateKnowledgeById(
-        @Param("id") int id,
-        @Param("userKlg") int userKlg
     );
 
     int deleteUserById(int id);

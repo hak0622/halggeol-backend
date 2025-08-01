@@ -8,13 +8,9 @@ import com.halggeol.backend.security.mail.service.MailService;
 import com.halggeol.backend.security.util.JwtManager;
 import com.halggeol.backend.user.dto.EditProfileDTO;
 import com.halggeol.backend.user.dto.EmailDTO;
-import com.halggeol.backend.user.dto.KnowledgeSurveyRequestDTO;
 import com.halggeol.backend.user.dto.UserJoinDTO;
-import com.halggeol.backend.user.dto.UserProductResponseDTO;
 import com.halggeol.backend.user.dto.UserProfileResponseDTO;
 import com.halggeol.backend.user.mapper.UserMapper;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -37,6 +33,16 @@ public class UserServiceImpl implements UserService {
     public boolean findByEmail(String email) {
         User user = userMapper.findByEmail(email);
         return user != null;
+    }
+
+    @Override
+    public void emailExists(String email) {
+        if (email == null || email.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이메일이 입력되지 않았습니다.");
+        }
+        if (!findByEmail(email)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다.");
+        }
     }
 
     @Override
@@ -107,12 +113,5 @@ public class UserServiceImpl implements UserService {
         }
         userMapper.deleteUserById(user.getUser().getId());
         return Map.of("Message", "회원탈퇴가 완료되었습니다.");
-    }
-
-    @Override
-    public Map<String, String> updateKnowledge(CustomUser user, KnowledgeSurveyRequestDTO surveyResult) {
-        int userKlg = 0; // surveyResult로 점수 내기
-        userMapper.updateKnowledgeById(user.getUser().getId(), userKlg);
-        return Map.of("Message", "금융 이해도 갱신이 완료되었습니다.");
     }
 }
