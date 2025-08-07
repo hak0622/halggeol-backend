@@ -203,5 +203,4 @@ public class RecommendServiceImpl implements RecommendService {
         }
         return null; //해당 상품이 추천 목록에 없는 경우 null 반환
     }
-
 }
