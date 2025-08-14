@@ -15,6 +15,7 @@ import com.halggeol.backend.recommend.dto.SavingsAlgorithmResponseDTO;
 import com.halggeol.backend.recommend.dto.UserVectorResponseDTO;
 import com.halggeol.backend.recommend.mapper.RecommendMapper;
 import com.halggeol.backend.recommend.service.calculater.ScoreCalculator;
+import com.halggeol.backend.survey.dto.TendencySurveyRequestDTO;
 import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -42,7 +43,7 @@ public class RecommendServiceImpl implements RecommendService {
     }
 
     @Override
-    @Scheduled(cron = "0 0 0 1 * *")
+    @Scheduled(cron = "15 0 0 * * *")
     public void updateAlgoCode() {
         System.out.println("Updating algorithm codes for all products...");
         updateStaticValues(); //최대/최소 금리를 업데이트
@@ -75,7 +76,7 @@ public class RecommendServiceImpl implements RecommendService {
     }
 
     @Override
-    @Scheduled(cron = "0 0 0 1 * *")
+    @Scheduled(cron = "30 0 0 * * *")
     public void updateRecommendation() {
         System.out.println("Updating recommendations for all users...");
         List<UserVectorResponseDTO> userVectors = mapper.getUserVectors(); //유저 벡터 리스트를 가져옴
@@ -202,5 +203,11 @@ public class RecommendServiceImpl implements RecommendService {
             return cosineSimilarity(productVectorList, userVectorList);
         }
         return null; //해당 상품이 추천 목록에 없는 경우 null 반환
+    }
+
+    public UserVectorResponseDTO initUserVector(TendencySurveyRequestDTO survey) {
+        int yieldScore, riskScore, costScore, liquidityScore, complexityScore;
+        //투자 성향 설문 결과를 기반으로 유저 벡터를 초기화
+        return UserVectorResponseDTO.builder().complexityScore(0.5).costScore(0.5).yieldScore(0.5).liquidityScore(0.5).riskScore(0.5).build();
     }
 }
