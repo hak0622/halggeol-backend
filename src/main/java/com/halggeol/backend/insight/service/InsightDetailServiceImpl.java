@@ -118,7 +118,7 @@ public class InsightDetailServiceImpl implements InsightDetailService {
             .profits(profits)
             .forexInfo(forexInfo)
             .regretScore((int) regret.regretScore())
-            .missAmount((int) regret.missAmount())
+            .missAmount((long) regret.missAmount())
             .similarProducts(similarProducts)
             .build();
     }
